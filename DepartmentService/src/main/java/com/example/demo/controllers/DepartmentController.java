@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -12,6 +13,8 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 @RestController
 public class DepartmentController {
 	
+	private Logger log = Logger.getLogger(DepartmentController.class);
+	
 	@Autowired
 	private RestTemplate template;
 	
@@ -22,6 +25,7 @@ public class DepartmentController {
 	@HystrixCommand(fallbackMethod = "fallBackMethod")
 	public String getDeptandEmps()
 	{
+		log.info("inside department service");
 		System.out.println("Hitting the employee Service");
 		String resp= template.exchange("http://employee-service/emps",HttpMethod.GET,null,String.class).getBody();
 		System.out.println("Got the response ");
